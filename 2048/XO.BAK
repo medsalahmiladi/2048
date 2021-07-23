@@ -1,0 +1,135 @@
+uses wincrt;
+type
+matrice=array[1..7,1..7]of char;
+
+var
+mat:matrice;
+jouer:char;
+win:boolean;
+rep:integer;
+
+procedure remplir(var mat:matrice);
+var
+l,c:integer;
+begin
+ for l:=1 to 7 do
+ begin
+ for c:=1to 7 do
+ begin
+ mat[l,c]:='.';
+ end;
+ end;
+ end;
+
+procedure affiche(mat:matrice;jouer:char);
+var
+l,c:integer;
+
+begin
+
+ for l:=1 to 7 do
+ begin
+ for c:=1to 7 do
+ begin
+ write(mat[l,c],' ');
+ end;
+ writeln;
+ end;
+ writeln('1 2 3 4 5 6 7 ');
+ writeln;
+ writeln('jouer:',jouer);
+ end;
+function posible(mat:matrice;rep:integer):boolean;
+var
+l:integer;
+ok:boolean;
+begin
+ok:=false;
+for l:=7 downto 1 do
+begin
+if (mat[l,rep]<>'o')and(mat[l,rep]<>'x')then
+ok:=true;
+end;
+posible:=ok;
+end;
+
+procedure placer(var mat:matrice;rep:integer;jouer:char);
+var
+l:integer;
+ok:boolean;
+begin
+l:=7;
+ok:=false;
+repeat
+if (mat[l,rep]<>'o')and(mat[l,rep]<>'x') then
+begin
+ok:=true;
+ mat[l,rep]:=jouer;
+ end;
+ l:=l-1;
+ until(ok);
+ end;
+function controler(mat:matrice;jouer:char):boolean;
+var
+l,c:integer;
+verif:boolean;
+begin
+verif:=false;
+for l:=1 to 7 do
+for c:=1 to 4 do
+begin
+if (mat[l,c]=jouer)and(mat[l,c+1]=jouer)and (mat[l,c+2]=jouer)and (mat[l,c+3]=jouer) then
+verif:=true;
+end;
+for c:=1 to 7 do
+for l:=1 to 4 do
+begin
+if (mat[l,c]=jouer)and(mat[l+1,c]=jouer)and (mat[l+2,c]=jouer)and (mat[l+3,c]=jouer) then
+verif:=true;
+end;
+for l:=1 to 4 do
+for c:=1 to 4 do
+begin
+if (mat[l,c]=jouer)and(mat[l+1,c+1]=jouer)and (mat[l+2,c+2]=jouer)and (mat[l+3,c+3]=jouer) then
+verif:=true;
+end;
+for l:=1 to 4 do
+for c:=7 downto 3 do
+begin
+if (mat[l,c]=jouer)and(mat[l+1,c-1]=jouer)and (mat[l+2,c-2]=jouer)and (mat[l+3,c-3]=jouer) then
+verif:=true;
+end;
+controler:=verif;
+end;
+
+
+
+
+
+begin
+remplir(mat);
+jouer:='x';
+affiche(mat,jouer);
+repeat
+repeat
+write('ecrire le num de colone choisi pour le jouer','''',jouer,'''',':');
+readln(rep)
+until (rep in [1..7])and (posible(mat,rep)) ;
+placer(mat,rep,jouer);
+clrscr;
+affiche(mat,jouer);
+win:=controler(mat,jouer);
+if win=false then
+begin
+if jouer='x' then
+jouer:='o'
+else if jouer='o' then
+jouer:='x';
+end;
+
+until win;
+write('you win');
+end.
+ 
+
+

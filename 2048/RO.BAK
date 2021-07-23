@@ -1,0 +1,67 @@
+uses wincrt;
+
+type info1=record
+           chaine:string;
+           equiv:integer;
+ end;
+
+ fiche= file of info1;
+var
+ft:text;
+f:fiche;
+
+function verif (ch:string):boolean;
+var ok:boolean ;
+    i:integer;
+begin
+i:=1; 
+repeat
+if ch[i] in ['I','V','X', 'L' ,'C', 'D' ,'M'] then
+begin
+ok:=true;
+i:=i+1;
+end
+ else
+ok:=false;
+until (i>length(ch)) and (ok=false); 
+verif:=ok;
+end;
+
+procedure remplir(var ft:text);
+var ch:string;
+    rep:char;
+begin
+rewrite(ft);
+
+  repeat
+  repeat
+writeln('donner une chaine') ;
+ readln(ch);
+  until verif(ch) ;
+  writeln(ft,ch);
+   repeat
+writeln('vouler vous saisir de noveaux')  ;
+readln(rep) ;
+until upcase (rep) in ['O','N'];
+
+until upcase (rep) ='N'
+end;
+
+procedure former (var ft:text; var f:fiche ) ;
+
+begin
+end;
+
+procedure affiche (var f:fiche) ;
+
+begin
+end;
+
+begin
+assign(ft,'romain.txt');
+assign(f,'romain.dat');
+remplir(ft) ;
+former(ft,f);
+affiche(f)   ;
+close(f);
+end.

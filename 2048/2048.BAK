@@ -1,0 +1,92 @@
+uses wincrt;
+type
+matrice=array[1..4,1..4]of integer;
+
+var
+mat:matrice;
+ok:boolean;
+rep:char;
+procedure rand(var tab:matrice);
+var
+nb,c,l,i,j,k,v:integer;
+ok:boolean;
+begin
+nb:=1;
+for l:=1to 4 do
+ for c:=1 to 4 do
+  begin
+   repeat
+    v:=random(16)+1;
+    i:=1;
+    j:=1;
+    ok:=true ;
+     for k:=1 to nb do
+      begin
+       if v=tab[i,j] then
+        ok:=false;
+       if j=4 then
+       begin
+        j:=0;
+        i:=i+1
+        end
+         else
+         j:=j+1;
+      end;
+   until (ok=true) or (nb=16)  ;
+  tab[l,c]:=v;
+  nb:=nb+1;
+  end;
+  end;
+ 
+  
+   
+
+{procedure premier(var mat:matrice);
+begin
+for l:=1to 4 do
+ for c:=1 to 4 do
+  mat[l,c]:=0;
+
+
+rand(tab);
+applrand(mat,tab);
+
+}
+
+procedure affiche(mat:matrice);
+var
+l,c:integer;
+begin
+for l:=1 to 4 do
+begin
+writeln   ;
+for c:=1 to 4 do
+ write(mat[l,c],'  ');
+ end;
+ end;
+
+begin
+rand(mat);
+affiche(mat);
+
+
+{premier(mat);
+affiche(mat);
+
+repeat
+ok:=false;
+
+repeat
+readln(rep);
+until(rep in['q','s','d','z']);
+
+decalage(mat,rep)
+ajout(mat);
+control(mat,ok);
+clrscr;
+affiche(mat);
+until ok=false;
+
+writeln('game over');
+ }
+end.
